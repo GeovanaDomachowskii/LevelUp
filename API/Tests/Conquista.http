@@ -1,0 +1,79 @@
+### 1. Cadastrar Primeira missão
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Primeira missão",
+  "descricao": "Conclua a sua primeira missão",
+  "tipo": "missoes",
+  "valorMinimo": 1
+}
+
+### 2. Cadastrar Maratona
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Maratona",
+  "descricao": "Estude 7 dias seguidos",
+  "tipo": "streak",
+  "valorMinimo": 7
+}
+
+### 3. Cadastrar Mil XP
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Mil XP",
+  "descricao": "Acumule 1000 de XP",
+  "tipo": "xp",
+  "valorMinimo": 1000
+}
+
+### 4. Cadastrar Dedicado
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Dedicado",
+  "descricao": "Conclua 10 missões",
+  "tipo": "missoes",
+  "valorMinimo": 10
+}
+
+### 5. Listar todas as conquistas
+GET http://localhost:5262/api/conquista/listar
+
+### 6. Erro esperado nome repetido (tem que dar 400)
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Maratona",
+  "descricao": "Repetida",
+  "tipo": "streak",
+  "valorMinimo": 3
+}
+
+### 7. Erro esperado tipo inválido (tem que dar 400)
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Tipo errado",
+  "descricao": "Teste",
+  "tipo": "ouro",
+  "valorMinimo": 5
+}
+
+### 8. Erro esperado valor zero (tem que dar 400)
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Valor zero",
+  "descricao": "Teste",
+  "tipo": "xp",
+  "valorMinimo": 0
+}
