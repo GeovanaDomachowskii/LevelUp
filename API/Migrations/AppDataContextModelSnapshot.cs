@@ -16,6 +16,34 @@ namespace API.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
+            modelBuilder.Entity("Conclusao", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DataConclusao")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EstudanteId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MissaoId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("XpGanho")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EstudanteId");
+
+                    b.HasIndex("MissaoId");
+
+                    b.ToTable("Conclusoes");
+                });
+
             modelBuilder.Entity("Conquista", b =>
                 {
                     b.Property<string>("Id")
@@ -104,6 +132,25 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Missoes");
+                });
+
+            modelBuilder.Entity("Conclusao", b =>
+                {
+                    b.HasOne("Estudante", "Estudante")
+                        .WithMany()
+                        .HasForeignKey("EstudanteId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Missao", "Missao")
+                        .WithMany()
+                        .HasForeignKey("MissaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Estudante");
+
+                    b.Navigation("Missao");
                 });
 #pragma warning restore 612, 618
         }
