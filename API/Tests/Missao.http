@@ -94,3 +94,31 @@ GET http://localhost:5262/api/missao/listar/dificuldade/Facil
  
 ### 11. Erro esperado: dificuldade inválida (tem que dar 400)
 GET http://localhost:5262/api/missao/listar/dificuldade/Super
+
+### 12. Buscar por parte do título
+GET http://localhost:5262/api/missao/buscar/SQL
+ 
+### 13. Erro esperado: título que não existe (tem que dar 404)
+GET http://localhost:5262/api/missao/buscar/ZZZ
+ 
+### 14. Alterar missão (troque o id)
+PUT http://localhost:5262/api/missao/alterar/COLE_O_ID_AQUI
+Content-Type: application/json
+ 
+{
+  "titulo": "Resolver 10 exercícios de SQL",
+  "descricao": "Praticar SELECT, WHERE, ORDER BY e JOIN",
+  "xp": 60,
+  "dificuldade": "Media"
+}
+ 
+### 15. Erro esperado: id que não existe (tem que dar 404)
+PUT http://localhost:5262/api/missao/alterar/id-que-nao-existe
+Content-Type: application/json
+ 
+{
+  "titulo": "Teste",
+  "descricao": "Teste",
+  "xp": 10,
+  "dificuldade": "Facil"
+}
