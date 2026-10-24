@@ -21,7 +21,7 @@ public static class EstudanteEndpoints
         ctx.SaveChanges(); 
         return Results.Created("", estudante);
     });
-    
+
     app.MapGet("/api/estudante/listar", ([FromServices] AppDataContext ctx) =>
     {
         return Results.Ok(ctx.Estudantes.OrderBy(e => e.Nome).ToList());
@@ -83,6 +83,22 @@ public static class EstudanteEndpoints
             XpParaProximoNivel = NivelHelper.XpParaProximoNivel(estudante.XpTotal),
             estudante.StreakAtual
         });
-    });                                        
+    }); 
+
+    app.MapDelete("/api/estudante/remover/{id}",
+    ([FromRoute] string id, [FromServices] AppDataContext ctx) =>
+    {
+        var estudante = ctx.Estudantes.Find(id);
+        if (estudante is null)
+            return Results.NotFound("Estudante não encontrado!");
+
+        if (ctx.Conclusoes.Any(c => c.EstudanteId == id))
+            return Results.BadRequest("Não é possível remover: o estudante possui conclusões registradas!");
+
+        ctx.Estudantes.Remove(estudante);
+        ctx.SaveChanges();
+        return Results.Ok(estudante);
+    });  
+                                  
     }
 }
