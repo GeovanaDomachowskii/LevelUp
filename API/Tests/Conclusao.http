@@ -33,3 +33,55 @@ Content-Type: application/json
  
 ### 6. Conferir o XP do estudante depois da conclusão
 GET http://localhost:5262/api/estudante/buscar/Ana
+
+
+### 7. Estudante com atividade ONTEM e streak 2
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Carla Ontem",
+    "curso": "Ciência da Computação",
+    "email": "carla@email.com",
+    "streakAtual": 2,
+    "ultimaAtividade": "2026-10-23T10:00:00"
+}
+
+### 8. Estudante com atividade 3 dias atrás e streak 5
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Diego Parado",
+    "curso": "Ciência da Computação",
+    "email": "diego@email.com",
+    "streakAtual": 5,
+    "ultimaAtividade": "2026-10-21T10:00:00"
+}
+
+### 9. Ver os ids dos estudantes novos
+GET http://localhost:5262/api/estudante/listar
+
+### 10. Concluir missão com a Carla (troque os ids)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+
+{
+    "estudanteId": "c679b3e0-4fc9-4415-a702-110dbf3d842e",
+    "missaoId": "ac390c6b-15ce-422b-89d9-f45f577ac266"
+}
+
+### 11. Concluir missão com o Diego (troque os ids)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+
+{
+    "estudanteId": "32aa9b65-953f-4fcd-b628-485a6f0f7aec",
+    "missaoId": "ac390c6b-15ce-422b-89d9-f45f577ac266"
+}
+
+### 12. Conferir o streak da Carla
+GET http://localhost:5262/api/estudante/buscar/Carla
+
+### 13. Conferir o streak do Diego
+GET http://localhost:5262/api/estudante/buscar/Diego
