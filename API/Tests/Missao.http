@@ -1,0 +1,87 @@
+### 1. Missão fácil
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Resolver 5 exercícios de SQL",
+  "descricao": "Praticar SELECT, WHERE e ORDER BY",
+  "xp": 50,
+  "dificuldade": "Facil"
+}
+ 
+### 2. Missão fácil
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Ler um capítulo sobre algoritmos",
+  "descricao": "Anotar os conceitos principais",
+  "xp": 30,
+  "dificuldade": "Facil"
+}
+ 
+### 3. Missão média
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Estudar Entity Framework",
+  "descricao": "Entender DbContext, DbSet e migrations",
+  "xp": 80,
+  "dificuldade": "Media"
+}
+ 
+### 4. Missão média
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Criar uma API com Minimal API",
+  "descricao": "Fazer um CRUD completo",
+  "xp": 120,
+  "dificuldade": "Media"
+}
+ 
+### 5. Missão difícil
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Montar um projeto com 4 tabelas relacionadas",
+  "descricao": "Modelar entidades, chaves estrangeiras e migrations",
+  "xp": 200,
+  "dificuldade": "Dificil"
+}
+ 
+### 6. Erro esperado: título repetido (tem que dar 400)
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Resolver 5 exercícios de SQL",
+  "descricao": "Repetida",
+  "xp": 10,
+  "dificuldade": "Facil"
+}
+ 
+### 7. Erro esperado: XP zero (tem que dar 400)
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Missão sem XP",
+  "descricao": "Teste",
+  "xp": 0,
+  "dificuldade": "Facil"
+}
+ 
+### 8. Erro esperado: dificuldade inválida (tem que dar 400)
+POST http://localhost:5262/api/missao/cadastrar
+Content-Type: application/json
+ 
+{
+  "titulo": "Missão com dificuldade errada",
+  "descricao": "Teste",
+  "xp": 10,
+  "dificuldade": "Super"
+}
