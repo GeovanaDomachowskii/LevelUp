@@ -69,3 +69,24 @@ Content-Type: application/json
   "curso": "Teste",
   "email": "teste2@email.com"
 }
+
+### 10. Perfil do estudante (troque o id)
+GET http://localhost:5262/api/estudante/perfil/627bec39-36a7-4116-97de-71b560811af6
+
+### 11. Erro esperado: perfil de id que não existe (tem que dar 404)
+GET http://localhost:5262/api/estudante/perfil/id-que-nao-existe
+
+### 12. Cadastrar estudante descartável (para remover)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Descartavel",
+  "curso": "Teste",
+  "email": "descartavel@email.com"
+}
+
+### 13. Remover estudante sem conclusões (troque o id)
+DELETE http://localhost:5262/api/estudante/remover/be6fb1ce-ca76-42f5-b25e-1b8c272e5a2c
+### 14. Erro esperado: id que não existe (tem que dar 404)
+DELETE http://localhost:5262/api/estudante/remover/id-que-nao-existe
