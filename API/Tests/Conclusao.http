@@ -1,0 +1,35 @@
+### 1. Ver os estudantes (copie o id da Ana)
+GET http://localhost:5262/api/estudante/listar
+ 
+### 2. Ver as missões (copie o id de uma missão)
+GET http://localhost:5262/api/missao/listar
+ 
+### 3. Registrar conclusão (troque os dois ids)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "4b00181c-ea0f-46ac-a4d7-3ca9b2bfafec",
+  "missaoId": "ac390c6b-15ce-422b-89d9-f45f577ac266"
+}
+ 
+### 4. Erro esperado: repetir a mesma conclusão hoje (tem que dar 400)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "4b00181c-ea0f-46ac-a4d7-3ca9b2bfafec",
+  "missaoId": "ac390c6b-15ce-422b-89d9-f45f577ac266"
+}
+ 
+### 5. Erro esperado: estudante que não existe (tem que dar 404)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "id-que-nao-existe",
+  "missaoId": "ac390c6b-15ce-422b-89d9-f45f577ac266"
+}
+ 
+### 6. Conferir o XP do estudante depois da conclusão
+GET http://localhost:5262/api/estudante/buscar/Ana
