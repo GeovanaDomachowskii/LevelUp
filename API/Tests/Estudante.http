@@ -40,3 +40,12 @@ Content-Type: application/json
   "curso": "Teste",
   "email": "teste@email.com"
 }
+
+### 5. Listar todos os estudantes
+GET http://localhost:5262/api/estudante/listar
+
+### 6. Buscar por nome (parte do nome)
+GET http://localhost:5262/api/estudante/buscar/Ana
+
+### 7. Erro esperado: nome que não existe (tem que dar 404)
+GET http://localhost:5262/api/estudante/buscar/ZZZ

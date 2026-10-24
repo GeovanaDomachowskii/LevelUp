@@ -18,8 +18,26 @@ public static class EstudanteEndpoints
             return Results.BadRequest("Já existe um estudante com esse e-mail!");
 
         ctx.Estudantes.Add(estudante);
-        ctx.SaveChanges(); // sem esta linha nada é gravado no banco
+        ctx.SaveChanges(); 
         return Results.Created("", estudante);
     });
+    app.MapGet("/api/estudante/listar", ([FromServices] AppDataContext ctx) =>
+    {
+        return Results.Ok(ctx.Estudantes.OrderBy(e => e.Nome).ToList());
+    });
+
+    app.MapGet("/api/estudante/buscar/{nome}",
+        ([FromRoute] string nome, [FromServices] AppDataContext ctx) =>
+    {
+        var encontrados = ctx.Estudantes
+            .Where(e => e.Nome.Contains(nome))
+            .OrderBy(e => e.Nome)
+            .ToList();
+
+        if (encontrados.Count == 0)
+            return Results.NotFound("Nenhum estudante encontrado!");
+
+        return Results.Ok(encontrados);
+    });                                            
     }
 }
