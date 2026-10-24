@@ -21,6 +21,7 @@ public static class EstudanteEndpoints
         ctx.SaveChanges(); 
         return Results.Created("", estudante);
     });
+    
     app.MapGet("/api/estudante/listar", ([FromServices] AppDataContext ctx) =>
     {
         return Results.Ok(ctx.Estudantes.OrderBy(e => e.Nome).ToList());
@@ -39,6 +40,7 @@ public static class EstudanteEndpoints
 
         return Results.Ok(encontrados);
     });
+
     app.MapPut("/api/estudante/alterar/{id}",
     ([FromRoute] string id, [FromBody] Estudante dados, [FromServices] AppDataContext ctx) =>
     {
@@ -60,6 +62,27 @@ public static class EstudanteEndpoints
         estudante.Email = dados.Email;
         ctx.SaveChanges();
         return Results.Ok(estudante);
-    });                                            
+    });  
+
+    app.MapGet("/api/estudante/perfil/{id}",
+    ([FromRoute] string id, [FromServices] AppDataContext ctx) =>
+    {
+    var estudante = ctx.Estudantes.Find(id);
+    if (estudante is null)
+        return Results.NotFound("Estudante não encontrado!");
+
+    int nivel = NivelHelper.CalcularNivel(estudante.XpTotal);
+
+    return Results.Ok(new
+        {
+            estudante.Nome,
+            estudante.Curso,
+            estudante.XpTotal,
+            Nivel = nivel,
+            Titulo = NivelHelper.ObterTitulo(nivel),
+            XpParaProximoNivel = NivelHelper.XpParaProximoNivel(estudante.XpTotal),
+            estudante.StreakAtual
+        });
+    });                                        
     }
 }
