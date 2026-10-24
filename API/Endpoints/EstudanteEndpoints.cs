@@ -38,6 +38,28 @@ public static class EstudanteEndpoints
             return Results.NotFound("Nenhum estudante encontrado!");
 
         return Results.Ok(encontrados);
+    });
+    app.MapPut("/api/estudante/alterar/{id}",
+    ([FromRoute] string id, [FromBody] Estudante dados, [FromServices] AppDataContext ctx) =>
+    {
+        var estudante = ctx.Estudantes.Find(id);
+        if (estudante is null)
+            return Results.NotFound("Estudante não encontrado!");
+
+        if (string.IsNullOrWhiteSpace(dados.Nome))
+            return Results.BadRequest("O nome não pode ser vazio!");
+
+        if (string.IsNullOrWhiteSpace(dados.Email))
+            return Results.BadRequest("O e-mail não pode ser vazio!");
+
+        if (ctx.Estudantes.Any(e => e.Email == dados.Email && e.Id != id))
+            return Results.BadRequest("Já existe outro estudante com esse e-mail!");
+
+        estudante.Nome = dados.Nome;
+        estudante.Curso = dados.Curso;
+        estudante.Email = dados.Email;
+        ctx.SaveChanges();
+        return Results.Ok(estudante);
     });                                            
     }
 }

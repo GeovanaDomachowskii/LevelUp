@@ -49,3 +49,23 @@ GET http://localhost:5262/api/estudante/buscar/Ana
 
 ### 7. Erro esperado: nome que não existe (tem que dar 404)
 GET http://localhost:5262/api/estudante/buscar/ZZZ
+
+### 8. Alterar estudante (troque o id)
+PUT http://localhost:5262/api/estudante/alterar/8183dbab-96c7-4ade-9c55-4f5f0766b404
+Content-Type: application/json
+
+{
+  "nome": "Ana Souza Lima",
+  "curso": "Engenharia de Software",
+  "email": "ana.lima@email.com"
+}
+
+### 9. Erro esperado: id que não existe (tem que dar 404)
+PUT http://localhost:5262/api/estudante/alterar/id-que-nao-existe
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "curso": "Teste",
+  "email": "teste2@email.com"
+}
