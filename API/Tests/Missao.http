@@ -85,3 +85,12 @@ Content-Type: application/json
   "xp": 10,
   "dificuldade": "Super"
 }
+
+### 9. Listar todas as missões
+GET http://localhost:5262/api/missao/listar
+ 
+### 10. Listar só as fáceis
+GET http://localhost:5262/api/missao/listar/dificuldade/Facil
+ 
+### 11. Erro esperado: dificuldade inválida (tem que dar 400)
+GET http://localhost:5262/api/missao/listar/dificuldade/Super

@@ -25,5 +25,25 @@ public static class MissaoEndpoints
             ctx.SaveChanges(); 
             return Results.Created("", missao);
         });
+
+        app.MapGet("/api/missao/listar", ([FromServices] AppDataContext ctx) =>
+        {
+            return Results.Ok(ctx.Missoes.OrderBy(m => m.Titulo).ToList());
+        });
+        
+        app.MapGet("/api/missao/listar/dificuldade/{d}",
+            ([FromRoute] string d, [FromServices] AppDataContext ctx) =>
+        {
+            string[] validas = { "Facil", "Media", "Dificil" };
+            if (!validas.Contains(d))
+                return Results.BadRequest("Dificuldade inválida! Use Facil, Media ou Dificil.");
+        
+            var lista = ctx.Missoes
+                .Where(m => m.Dificuldade == d)
+                .OrderBy(m => m.Titulo)
+                .ToList();
+            return Results.Ok(lista);
+        });
+
     }
 }
