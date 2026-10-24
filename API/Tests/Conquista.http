@@ -1,0 +1,112 @@
+### 1. Cadastrar Primeira missão
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Primeira missão",
+  "descricao": "Conclua a sua primeira missão",
+  "tipo": "missoes",
+  "valorMinimo": 1
+}
+
+### 2. Cadastrar Maratona
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Maratona",
+  "descricao": "Estude 7 dias seguidos",
+  "tipo": "streak",
+  "valorMinimo": 7
+}
+
+### 3. Cadastrar Mil XP
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Mil XP",
+  "descricao": "Acumule 1000 de XP",
+  "tipo": "xp",
+  "valorMinimo": 1000
+}
+
+### 4. Cadastrar Dedicado
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Dedicado",
+  "descricao": "Conclua 10 missões",
+  "tipo": "missoes",
+  "valorMinimo": 10
+}
+
+### 5. Listar todas as conquistas
+GET http://localhost:5262/api/conquista/listar
+
+### 6. Erro esperado nome repetido (tem que dar 400)
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Maratona",
+  "descricao": "Repetida",
+  "tipo": "streak",
+  "valorMinimo": 3
+}
+
+### 7. Erro esperado tipo inválido (tem que dar 400)
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Tipo errado",
+  "descricao": "Teste",
+  "tipo": "ouro",
+  "valorMinimo": 5
+}
+
+### 8. Erro esperado valor zero (tem que dar 400)
+POST http://localhost:5262/api/conquista/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Valor zero",
+  "descricao": "Teste",
+  "tipo": "xp",
+  "valorMinimo": 0
+}
+### 9. Buscar por parte do nome
+GET http://localhost:5262/api/conquista/buscar/Mil
+
+### 10. Erro esperado: nome que não existe (tem que dar 404)
+GET http://localhost:5262/api/conquista/buscar/ZZZ
+
+### 11. Alterar conquista (troque o id)
+PUT http://localhost:5262/api/conquista/alterar/d5454749-4120-436f-9df4-dfc314eab07f
+Content-Type: application/json
+
+{
+  "nome": "Dedicado Total",
+  "descricao": "Conclua 15 missões",
+  "tipo": "missoes",
+  "valorMinimo": 15
+}
+
+### 12. Erro esperado: id que não existe (tem que dar 404)
+PUT http://localhost:5262/api/conquista/alterar/id-que-nao-existe
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "descricao": "Teste",
+  "tipo": "xp",
+  "valorMinimo": 5
+}
+
+### 13. Remover conquista (troque o id: use a que você alterou)
+DELETE http://localhost:5262/api/conquista/remover/d5454749-4120-436f-9df4-dfc314eab07f
+
+### 14. Erro esperado: remover de novo o mesmo id (tem que dar 404)
+DELETE http://localhost:5262/api/conquista/remover/d5454749-4120-436f-9df4-dfc314eab07f
