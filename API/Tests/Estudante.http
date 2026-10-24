@@ -1,0 +1,71 @@
+### 1. Cadastrar estudante (válido)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Ana Souza",
+  "curso": "Ciência da Computação",
+  "email": "ana@email.com"
+}
+
+### 2. Cadastrar estudante com XP e streak (para demonstrar no vídeo)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Bruno Lima",
+  "curso": "Engenharia de Software",
+  "email": "bruno@email.com",
+  "xpTotal": 250,
+  "streakAtual": 2,
+  "ultimaAtividade": "2026-10-22T10:00:00"
+}
+
+### 3. Erro esperado: e-mail repetido (tem que dar 400)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Ana Repetida",
+  "curso": "Ciência da Computação",
+  "email": "ana@email.com"
+}
+
+### 4. Erro esperado: nome vazio (tem que dar 400)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "",
+  "curso": "Teste",
+  "email": "teste@email.com"
+}
+
+### 5. Listar todos os estudantes
+GET http://localhost:5262/api/estudante/listar
+
+### 6. Buscar por nome (parte do nome)
+GET http://localhost:5262/api/estudante/buscar/Ana
+
+### 7. Erro esperado: nome que não existe (tem que dar 404)
+GET http://localhost:5262/api/estudante/buscar/ZZZ
+
+### 8. Alterar estudante (troque o id)
+PUT http://localhost:5262/api/estudante/alterar/8183dbab-96c7-4ade-9c55-4f5f0766b404
+Content-Type: application/json
+
+{
+  "nome": "Ana Souza Lima",
+  "curso": "Engenharia de Software",
+  "email": "ana.lima@email.com"
+}
+
+### 9. Erro esperado: id que não existe (tem que dar 404)
+PUT http://localhost:5262/api/estudante/alterar/id-que-nao-existe
+Content-Type: application/json
+
+{
+  "nome": "Teste",
+  "curso": "Teste",
+  "email": "teste2@email.com"
+}
