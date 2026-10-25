@@ -6,6 +6,7 @@ public static class ConclusaoEndpoints
 {
     public static void MapConclusaoEndpoints(this WebApplication app)
     {
+        // Registrar conclusão (Ju3, Ju4, Ju5 e Ju6)
         app.MapPost("/api/conclusao/registrar",
             ([FromBody] Conclusao c, [FromServices] AppDataContext ctx) =>
         {
@@ -48,7 +49,6 @@ public static class ConclusaoEndpoints
             int dobro = missao.MissaoDoDia ? 2 : 1;
 
             c.XpGanho = (int)Math.Round(missao.Xp * bonus * dobro);
-
             c.DataConclusao = DateTime.Now;
 
             // Nível (Ju6)
@@ -66,6 +66,37 @@ public static class ConclusaoEndpoints
                 Titulo = NivelHelper.ObterTitulo(estudante.Nivel),
                 estudante.StreakAtual
             });
+        });
+
+        // Histórico geral de conclusões (Ju7)
+        app.MapGet("/api/conclusao/listar",
+            ([FromServices] AppDataContext ctx) =>
+        {
+            var historico = ctx.Conclusoes
+                .Include(c => c.Estudante)
+                .Include(c => c.Missao)
+                .OrderByDescending(c => c.DataConclusao)
+                .ToList();
+
+            return Results.Ok(historico);
+        });
+
+        // Histórico de conclusões de um estudante (Ju7)
+        app.MapGet("/api/conclusao/estudante/{id}",
+            ([FromRoute] string id, [FromServices] AppDataContext ctx) =>
+        {
+            var estudante = ctx.Estudantes.Find(id);
+            if (estudante is null)
+                return Results.NotFound("Estudante não encontrado!");
+
+            var historico = ctx.Conclusoes
+                .Where(c => c.EstudanteId == id)
+                .Include(c => c.Estudante)
+                .Include(c => c.Missao)
+                .OrderByDescending(c => c.DataConclusao)
+                .ToList();
+
+            return Results.Ok(historico);
         });
     }
 }

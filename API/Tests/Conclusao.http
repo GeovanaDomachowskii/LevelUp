@@ -221,3 +221,13 @@ Content-Type: application/json
   "estudanteId": "0b8cf510-8537-4833-a50f-ae4a8354900b",
   "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
 }
+
+
+### 31. Histórico geral (com estudante e missão, do mais recente para o mais antigo)
+GET http://localhost:5262/api/conclusao/listar
+
+### 32. Histórico de um estudante (Fabio Nivel)
+GET http://localhost:5262/api/conclusao/estudante/770ef327-757b-44e0-b2f9-d6b786e67190
+
+### 33. Erro esperado: estudante que não existe (tem que dar 404)
+GET http://localhost:5262/api/conclusao/estudante/id-que-nao-existe
