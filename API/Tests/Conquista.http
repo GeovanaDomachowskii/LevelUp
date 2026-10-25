@@ -110,3 +110,9 @@ DELETE http://localhost:5262/api/conquista/remover/d5454749-4120-436f-9df4-dfc31
 
 ### 14. Erro esperado: remover de novo o mesmo id (tem que dar 404)
 DELETE http://localhost:5262/api/conquista/remover/d5454749-4120-436f-9df4-dfc314eab07f
+
+### Conquistas liberadas por estudante (troque pelo id de um estudante com XP)
+GET http://localhost:5262/api/conquista/estudante/1f3ab840-9016-4d14-bddc-5fd0703545b1
+ 
+### Erro esperado: estudante que não existe (404)
+GET http://localhost:5262/api/conquista/estudante/00000000-0000-0000-0000-000000000000
