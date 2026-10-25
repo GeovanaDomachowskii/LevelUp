@@ -109,5 +109,20 @@ public static class MissaoEndpoints
         
             return Results.Ok(missao);
         });
+
+        app.MapDelete("/api/missao/remover/{id}",
+            ([FromRoute] string id, [FromServices] AppDataContext ctx) =>
+        {
+            var missao = ctx.Missoes.Find(id);
+            if (missao is null)
+                return Results.NotFound("Missão não encontrada!");
+        
+            if (ctx.Conclusoes.Any(c => c.MissaoId == id))
+                return Results.BadRequest("Não é possível remover: a missão já tem conclusões registradas!");
+        
+            ctx.Missoes.Remove(missao);
+            ctx.SaveChanges();
+            return Results.Ok("Missão removida com sucesso!");
+        });
     }
 }
