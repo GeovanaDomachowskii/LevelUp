@@ -86,5 +86,61 @@ public static class MissaoEndpoints
             ctx.SaveChanges();
             return Results.Ok(missao);
         });
+
+        app.MapPut("/api/missao/sortear-do-dia", ([FromServices] AppDataContext ctx) =>
+        {
+            var missoes = ctx.Missoes.ToList();
+            if (missoes.Count == 0)
+                return Results.BadRequest("Nenhuma missão cadastrada!");
+        
+            foreach (var m in missoes) m.MissaoDoDia = false; // limpa a anterior
+        
+            var sorteada = missoes[Random.Shared.Next(missoes.Count)];
+            sorteada.MissaoDoDia = true;
+            ctx.SaveChanges();
+            return Results.Ok(sorteada);
+        });
+        
+        app.MapGet("/api/missao/do-dia", ([FromServices] AppDataContext ctx) =>
+        {
+            var missao = ctx.Missoes.FirstOrDefault(m => m.MissaoDoDia);
+            if (missao is null)
+                return Results.NotFound("Nenhuma missão do dia sorteada!");
+        
+            return Results.Ok(missao);
+        });
+
+        app.MapDelete("/api/missao/remover/{id}",
+            ([FromRoute] string id, [FromServices] AppDataContext ctx) =>
+        {
+            var missao = ctx.Missoes.Find(id);
+            if (missao is null)
+                return Results.NotFound("Missão não encontrada!");
+        
+            if (ctx.Conclusoes.Any(c => c.MissaoId == id))
+                return Results.BadRequest("Não é possível remover: a missão já tem conclusões registradas!");
+        
+            ctx.Missoes.Remove(missao);
+            ctx.SaveChanges();
+            return Results.Ok("Missão removida com sucesso!");
+        });
+
+        app.MapGet("/api/missao/mais-concluidas", ([FromServices] AppDataContext ctx) =>
+        {
+            var top = ctx.Conclusoes
+                .GroupBy(c => new { c.MissaoId, c.Missao!.Titulo })
+                .Select(g => new
+                {
+                    g.Key.MissaoId,
+                    g.Key.Titulo,
+                    TotalConclusoes = g.Count()
+                })
+                .OrderByDescending(x => x.TotalConclusoes)
+                .Take(5)
+                .ToList();
+        
+            return Results.Ok(top);
+        });
+
     }
 }

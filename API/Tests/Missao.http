@@ -122,3 +122,51 @@ Content-Type: application/json
   "xp": 10,
   "dificuldade": "Facil"
 }
+
+### 16. Sortear a missão do dia
+PUT http://localhost:5262/api/missao/sortear-do-dia
+ 
+### 17. Ver a missão do dia
+GET http://localhost:5262/api/missao/do-dia
+
+### 18. Ver os estudantes (copie o id da Ana e do Bruno; se estiver vazio, rode os pedidos 1 e 2 do Estudante.http)
+GET http://localhost:5262/api/estudante/listar
+ 
+### 19. A Ana conclui a missão de SQL (troque os ids)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "1f3ab840-9016-4d14-bddc-5fd0703545b1",
+  "missaoId": "14a5b7bb-3780-4560-8700-3a41c8035d9c"
+}
+ 
+### 20. O Bruno conclui a missão de SQL (troque os ids)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "ae1a4c20-b0ba-40b0-9611-e91db0c84eb2",
+  "missaoId": "14a5b7bb-3780-4560-8700-3a41c8035d9c"
+}
+ 
+### 21. A Ana conclui a missão de Entity Framework (troque os ids)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "1f3ab840-9016-4d14-bddc-5fd0703545b1",
+  "missaoId": "a5cd0c4e-22ee-42f8-8085-ca909e2fca0c"
+}
+ 
+### 22. Erro esperado: remover missão COM conclusões (troque o id pelo da missão de SQL; tem que dar 400)
+DELETE http://localhost:5262/api/missao/remover/14a5b7bb-3780-4560-8700-3a41c8035d9c
+ 
+### 23. Remover missão SEM conclusões (troque o id pelo de "Criar uma API com Minimal API"; tem que dar 200)
+DELETE http://localhost:5262/api/missao/remover/4037c3e9-463b-4d8e-af15-b62649e412c8
+ 
+### 24. Erro esperado: id que não existe (tem que dar 404)
+DELETE http://localhost:5262/api/missao/remover/5f337ccb-c9c6-40fd-8f65-0aad8f7yhg65
+
+### 25. Missões mais concluídas
+GET http://localhost:5262/api/missao/mais-concluidas
