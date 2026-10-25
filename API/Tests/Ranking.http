@@ -1,0 +1,74 @@
+
+### 1. Cadastrar estudantes de dois cursos com XP diferente
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Hugo Top",
+    "curso": "Engenharia de Software",
+    "email": "hugo@email.com",
+    "xpTotal": 500,
+    "nivel": 6
+}
+
+### 2. Cadastrar
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Iris Meio",
+    "curso": "Ciência da Computação",
+    "email": "iris@email.com",
+    "xpTotal": 300,
+    "nivel": 4
+}
+
+### 3. Cadastrar
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+    "nome": "Joao Baixo",
+    "curso": "Ciência da Computação",
+    "email": "joao@email.com",
+    "xpTotal": 100,
+    "nivel": 2
+}
+
+### 4. Ver os ids (copie o do Hugo e o da Iris)
+GET http://localhost:5262/api/estudante/listar
+
+### 5. Ver as missões (copie o id de uma)
+GET http://localhost:5262/api/missao/listar
+
+### 6. Hugo conclui uma missão
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+
+{
+    "estudanteId": "50b439fa-5a73-4bd4-a0e7-987c6bc3eff3",
+    "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
+
+
+### 7. Iris conclui a mesma missão
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+
+{
+    "estudanteId": "542bfd6b-5f56-4a8f-95a4-b14ddf17f58b",
+    "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
+
+
+### 8. Ranking geral
+GET http://localhost:5262/api/ranking/geral
+
+### 9. Ranking semanal
+GET http://localhost:5262/api/ranking/semanal
+
+### 10. Ranking de um curso
+GET http://localhost:5262/api/ranking/curso/Ciência%20da%20Computação
+
+### 11. Erro esperado: curso que não existe
+GET http://localhost:5262/api/ranking/curso/Medicina
