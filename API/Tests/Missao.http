@@ -122,3 +122,9 @@ Content-Type: application/json
   "xp": 10,
   "dificuldade": "Facil"
 }
+
+### 16. Sortear a missão do dia
+PUT http://localhost:5262/api/missao/sortear-do-dia
+ 
+### 17. Ver a missão do dia
+GET http://localhost:5262/api/missao/do-dia

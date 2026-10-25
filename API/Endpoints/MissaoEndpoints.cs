@@ -86,5 +86,28 @@ public static class MissaoEndpoints
             ctx.SaveChanges();
             return Results.Ok(missao);
         });
+
+        app.MapPut("/api/missao/sortear-do-dia", ([FromServices] AppDataContext ctx) =>
+        {
+            var missoes = ctx.Missoes.ToList();
+            if (missoes.Count == 0)
+                return Results.BadRequest("Nenhuma missão cadastrada!");
+        
+            foreach (var m in missoes) m.MissaoDoDia = false; // limpa a anterior
+        
+            var sorteada = missoes[Random.Shared.Next(missoes.Count)];
+            sorteada.MissaoDoDia = true;
+            ctx.SaveChanges();
+            return Results.Ok(sorteada);
+        });
+        
+        app.MapGet("/api/missao/do-dia", ([FromServices] AppDataContext ctx) =>
+        {
+            var missao = ctx.Missoes.FirstOrDefault(m => m.MissaoDoDia);
+            if (missao is null)
+                return Results.NotFound("Nenhuma missão do dia sorteada!");
+        
+            return Results.Ok(missao);
+        });
     }
 }
