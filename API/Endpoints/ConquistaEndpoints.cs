@@ -83,5 +83,32 @@ public static class ConquistaEndpoints
             ctx.SaveChanges();
             return Results.Ok("Conquista removida com sucesso!");
         });
+
+        app.MapGet("/api/conquista/estudante/{estudanteId}",
+            ([FromRoute] string estudanteId, [FromServices] AppDataContext ctx) =>
+        {
+            var est = ctx.Estudantes.Find(estudanteId);
+            if (est is null)
+                return Results.NotFound("Estudante não encontrado!");
+        
+            int totalMissoes = ctx.Conclusoes.Count(c => c.EstudanteId == estudanteId);
+        
+            var liberadas = ctx.Conquistas
+                .ToList()
+                .Where(q =>
+                    (q.Tipo == "xp" && est.XpTotal >= q.ValorMinimo) ||
+                    (q.Tipo == "streak" && est.StreakAtual >= q.ValorMinimo) ||
+                    (q.Tipo == "missoes" && totalMissoes >= q.ValorMinimo))
+                .ToList();
+        
+            return Results.Ok(new
+            {
+                Estudante = est.Nome,
+                XpTotal = est.XpTotal,
+                StreakAtual = est.StreakAtual,
+                MissoesConcluidas = totalMissoes,
+                Liberadas = liberadas
+            });
+        });
     }
 }
