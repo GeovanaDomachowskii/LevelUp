@@ -50,12 +50,22 @@ public static class ConclusaoEndpoints
             c.XpGanho = (int)Math.Round(missao.Xp * bonus * dobro);
 
             c.DataConclusao = DateTime.Now;
+
+            // Nível (Ju6)
             estudante.XpTotal += c.XpGanho;
+            estudante.Nivel = NivelHelper.CalcularNivel(estudante.XpTotal);
 
             ctx.Conclusoes.Add(c);
             ctx.SaveChanges();
 
-            return Results.Created("", c);
+            return Results.Created("", new
+            {
+                Conclusao = c,
+                estudante.XpTotal,
+                estudante.Nivel,
+                Titulo = NivelHelper.ObterTitulo(estudante.Nivel),
+                estudante.StreakAtual
+            });
         });
     }
 }

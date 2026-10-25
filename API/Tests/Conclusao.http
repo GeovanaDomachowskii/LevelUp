@@ -178,3 +178,46 @@ Content-Type: application/json
   "missaoId": "05749be2-fe2f-43fa-adbe-d7c2d564b2d0"
 }
 
+
+### 26. Estudante com 190 de XP (vai de nível 2 para 3)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Fabio Nivel",
+  "curso": "Ciência da Computação",
+  "email": "fabio@email.com",
+  "xpTotal": 190
+}
+
+### 27. Estudante com 1000 de XP (nível 11: Lenda)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+
+{
+  "nome": "Gabi Lenda",
+  "curso": "Ciência da Computação",
+  "email": "gabi@email.com",
+  "xpTotal": 1000
+}
+
+### 28. Ver os ids
+GET http://localhost:5262/api/estudante/listar
+
+### 29. Fabio conclui uma missão de 80 XP que NÃO é a do dia (esperado: xpTotal 270, nivel 3, Estagiário)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+
+{
+  "estudanteId": "770ef327-757b-44e0-b2f9-d6b786e67190",
+  "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
+
+### 30. Gabi conclui a mesma missão (esperado: xpTotal 1080, nivel 11, Lenda)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+
+{
+  "estudanteId": "0b8cf510-8537-4833-a50f-ae4a8354900b",
+  "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
