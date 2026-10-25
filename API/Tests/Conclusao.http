@@ -44,7 +44,7 @@ Content-Type: application/json
     "curso": "Ciência da Computação",
     "email": "carla@email.com",
     "streakAtual": 2,
-    "ultimaAtividade": "2026-10-23T10:00:00"
+    "ultimaAtividade": "2026-10-24T10:00:00"
 }
 
 ### 8. Estudante com atividade 3 dias atrás e streak 5
@@ -85,3 +85,96 @@ GET http://localhost:5262/api/estudante/buscar/Carla
 
 ### 13. Conferir o streak do Diego
 GET http://localhost:5262/api/estudante/buscar/Diego
+
+### 14. Estudante SEM bônus (primeira atividade, streak 1)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+ 
+{
+  "nome": "Eva Sem Bonus",
+  "curso": "Ciência da Computação",
+  "email": "eva@email.com"
+}
+ 
+### 15. Estudante com streak 2 e atividade ONTEM (vai para 3: bônus 1,10)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+ 
+{
+  "nome": "Caio Tres",
+  "curso": "Ciência da Computação",
+  "email": "caio@email.com",
+  "streakAtual": 2,
+  "ultimaAtividade": "2026-10-24T10:00:00"
+}
+ 
+### 16. Estudante com streak 6 e atividade ONTEM (vai para 7: bônus 1,25)
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+ 
+{
+  "nome": "Dora Sete",
+  "curso": "Ciência da Computação",
+  "email": "dora@email.com",
+  "streakAtual": 6,
+  "ultimaAtividade": "2026-10-24T10:00:00"
+}
+ 
+### 17. Ver os ids dos estudantes
+GET http://localhost:5262/api/estudante/listar
+ 
+### 18. Ver as missões (use "Estudar Entity Framework", que vale 80 de XP)
+GET http://localhost:5262/api/missao/listar
+ 
+### 19. Eva conclui a missão (esperado: xpGanho 80)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "13ed707c-8ad0-4670-b1d1-0b1eb068a970",
+  "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
+ 
+### 20. Caio conclui a missão (esperado: xpGanho 88)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "aac02570-2cd5-4a30-af2b-3c394cbaa71e",
+  "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
+ 
+### 21. Dora conclui a missão (esperado: xpGanho 100)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "1d5018b5-ec4a-4681-93d4-c6022d374ace",
+  "missaoId": "6d2501ba-069c-4f97-87b5-dbb9d7c42f65"
+}
+ 
+### 22. Sortear a missão do dia (precisa do M7 do Miguel na main)
+PUT http://localhost:5262/api/missao/sortear-do-dia
+ 
+### 23. Ver qual é a missão do dia (copie o id e o xp dela)
+GET http://localhost:5262/api/missao/do-dia
+ 
+### 24. Estudante novo para o teste do dobro
+POST http://localhost:5262/api/estudante/cadastrar
+Content-Type: application/json
+ 
+{
+  "nome": "Gil Dobro",
+  "curso": "Ciência da Computação",
+  "email": "gil@email.com"
+}
+ 
+### 25. Gil conclui a missão DO DIA (troque os ids; esperado: xpGanho = o dobro do XP da missão)
+POST http://localhost:5262/api/conclusao/registrar
+Content-Type: application/json
+ 
+{
+  "estudanteId": "6de156a2-44c5-44f4-9fef-68cadfc53661",
+  "missaoId": "05749be2-fe2f-43fa-adbe-d7c2d564b2d0"
+}
+

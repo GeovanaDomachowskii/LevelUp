@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,10 +18,13 @@ public static class ConclusaoEndpoints
                 return Results.NotFound("Missão não encontrada!");
 
             var hoje = DateTime.Today;
+
             if (ctx.Conclusoes.Any(x => x.EstudanteId == c.EstudanteId
-                && x.MissaoId == c.MissaoId && x.DataConclusao >= hoje))
+                && x.MissaoId == c.MissaoId
+                && x.DataConclusao >= hoje))
                 return Results.BadRequest("Missão já concluída hoje!");
 
+            // Streak (Ju4)
             if (estudante.UltimaAtividade is null)
             {
                 estudante.StreakAtual = 1;
@@ -28,18 +32,29 @@ public static class ConclusaoEndpoints
             else
             {
                 int dias = (hoje - estudante.UltimaAtividade.Value.Date).Days;
-                if (dias == 1) estudante.StreakAtual++;
-                else if (dias > 1) estudante.StreakAtual = 1;
-                // dias == 0: concluiu de novo no mesmo dia, o streak se mantém
+
+                if (dias == 1)
+                    estudante.StreakAtual++;
+                else if (dias > 1)
+                    estudante.StreakAtual = 1;
             }
+
             estudante.UltimaAtividade = DateTime.Now;
 
-            c.XpGanho = missao.Xp;
+            // XP com bônus (Ju5)
+            double bonus = estudante.StreakAtual >= 7 ? 1.25
+                : estudante.StreakAtual >= 3 ? 1.10 : 1.0;
+
+            int dobro = missao.MissaoDoDia ? 2 : 1;
+
+            c.XpGanho = (int)Math.Round(missao.Xp * bonus * dobro);
+
             c.DataConclusao = DateTime.Now;
             estudante.XpTotal += c.XpGanho;
 
             ctx.Conclusoes.Add(c);
             ctx.SaveChanges();
+
             return Results.Created("", c);
         });
     }
