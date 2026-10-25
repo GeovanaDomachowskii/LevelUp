@@ -163,18 +163,10 @@ Content-Type: application/json
 DELETE http://localhost:5262/api/missao/remover/14a5b7bb-3780-4560-8700-3a41c8035d9c
  
 ### 23. Remover missão SEM conclusões (troque o id pelo de "Criar uma API com Minimal API"; tem que dar 200)
-DELETE http://localhost:5262/api/missao/remover/212f1a1f-93f7-41cc-b1ed-54422703742a
+DELETE http://localhost:5262/api/missao/remover/4037c3e9-463b-4d8e-af15-b62649e412c8
  
 ### 24. Erro esperado: id que não existe (tem que dar 404)
 DELETE http://localhost:5262/api/missao/remover/5f337ccb-c9c6-40fd-8f65-0aad8f7yhg65
 
-### 26. Cadastrar missão só para testar a remoção
-POST http://localhost:5262/api/missao/cadastrar
-Content-Type: application/json
-
-{
-  "titulo": "Missão para remover",
-  "descricao": "Teste de remoção",
-  "xp": 10,
-  "dificuldade": "Facil"
-}
+### 25. Missões mais concluídas
+GET http://localhost:5262/api/missao/mais-concluidas

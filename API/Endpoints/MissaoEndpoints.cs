@@ -124,5 +124,23 @@ public static class MissaoEndpoints
             ctx.SaveChanges();
             return Results.Ok("Missão removida com sucesso!");
         });
+
+        app.MapGet("/api/missao/mais-concluidas", ([FromServices] AppDataContext ctx) =>
+        {
+            var top = ctx.Conclusoes
+                .GroupBy(c => new { c.MissaoId, c.Missao!.Titulo })
+                .Select(g => new
+                {
+                    g.Key.MissaoId,
+                    g.Key.Titulo,
+                    TotalConclusoes = g.Count()
+                })
+                .OrderByDescending(x => x.TotalConclusoes)
+                .Take(5)
+                .ToList();
+        
+            return Results.Ok(top);
+        });
+
     }
 }
