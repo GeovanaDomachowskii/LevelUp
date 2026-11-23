@@ -1,20 +1,32 @@
-import { useEffect, useState } from 'react';
-import { api } from './services/api';
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import Estudantes from './pages/Estudantes';
+import Missoes from './pages/Missoes';
+import Conquistas from './pages/Conquistas';
+import Conclusoes from './pages/Conclusoes';
+import Rankings from './pages/Rankings';
+ 
+// Cada tela tem um título (no menu) e o componente que a desenha
+const telas = {
+  dashboard: { titulo: 'Início', componente: Dashboard },
+  estudantes: { titulo: 'Estudantes', componente: Estudantes },
+  missoes: { titulo: 'Missões', componente: Missoes },
+  conclusoes: { titulo: 'Concluir missão', componente: Conclusoes },
+  conquistas: { titulo: 'Conquistas', componente: Conquistas },
+  rankings: { titulo: 'Rankings', componente: Rankings },
+};
  
 export default function App() {
-  const [status, setStatus] = useState('verificando...');
- 
-  useEffect(() => {
-    api
-      .get('/')
-      .then((texto) => setStatus('conectada: ' + texto))
-      .catch((e) => setStatus('com erro: ' + e.message));
-  }, []);
+  const [tela, setTela] = useState('dashboard');
+  const TelaAtual = telas[tela].componente;
  
   return (
-    <div>
-      <h1>Level Up</h1>
-      <p>API {status}</p>
+    <div className="app">
+      <Navbar telas={telas} atual={tela} aoMudar={setTela} />
+      <main className="conteudo">
+        <TelaAtual aoNavegar={setTela} />
+      </main>
     </div>
   );
 }
