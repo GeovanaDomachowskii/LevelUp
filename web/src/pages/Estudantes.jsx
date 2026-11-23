@@ -8,6 +8,7 @@ export default function Estudantes() {
   const [estudantes, setEstudantes] = useState([]);
   const [busca, setBusca] = useState('');
   const [form, setForm] = useState(formVazio);
+  const [editandoId, setEditandoId] = useState(null);
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
 
   function mostrarErro(texto) {
@@ -49,12 +50,28 @@ export default function Estudantes() {
     setForm({ ...form, [evento.target.name]: evento.target.value });
   }
 
+  function cancelarEdicao() {
+    setEditandoId(null);
+    setForm(formVazio);
+  }
+
+  function iniciarEdicao(estudante) {
+    setEditandoId(estudante.id);
+    setForm({ nome: estudante.nome, curso: estudante.curso, email: estudante.email });
+    setAviso({ tipo: 'erro', texto: '' });
+  }
+
   async function aoSalvar(evento) {
     evento.preventDefault();
     try {
-      await api.post('/api/estudante/cadastrar', form);
-      mostrarOk('Estudante cadastrado com sucesso!');
-      setForm(formVazio);
+      if (editandoId) {
+        await api.put(`/api/estudante/alterar/${editandoId}`, form);
+        mostrarOk('Estudante alterado com sucesso!');
+      } else {
+        await api.post('/api/estudante/cadastrar', form);
+        mostrarOk('Estudante cadastrado com sucesso!');
+      }
+      cancelarEdicao();
       carregar(busca);
     } catch (e) {
       mostrarErro(e.message);
@@ -80,7 +97,14 @@ export default function Estudantes() {
           <input name="email" type="email" value={form.email} onChange={aoDigitar} required />
         </label>
         <div className="acoes">
-          <button className="btn btn-primario" type="submit">Cadastrar</button>
+          <button className="btn btn-primario" type="submit">
+            {editandoId ? 'Salvar alterações' : 'Cadastrar'}
+          </button>
+          {editandoId && (
+            <button className="btn btn-secundario" type="button" onClick={cancelarEdicao}>
+              Cancelar
+            </button>
+          )}
         </div>
       </form>
 
@@ -99,7 +123,7 @@ export default function Estudantes() {
         <table className="tabela">
           <thead>
             <tr>
-              <th>Nome</th><th>Curso</th><th>E-mail</th><th>XP</th><th>Nível</th><th>Streak</th>
+              <th>Nome</th><th>Curso</th><th>E-mail</th><th>XP</th><th>Nível</th><th>Streak</th><th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -111,6 +135,13 @@ export default function Estudantes() {
                 <td>{e.xpTotal}</td>
                 <td>{e.nivel}</td>
                 <td>{e.streakAtual}</td>
+                <td>
+                  <div className="acoes">
+                    <button className="btn btn-secundario btn-pequeno" onClick={() => iniciarEdicao(e)}>
+                      Editar
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
