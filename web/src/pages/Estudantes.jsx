@@ -61,6 +61,19 @@ export default function Estudantes() {
     setAviso({ tipo: 'erro', texto: '' });
   }
 
+  async function remover(estudante) {
+    if (!window.confirm(`Remover o estudante ${estudante.nome}?`)) return;
+    try {
+      await api.delete(`/api/estudante/remover/${estudante.id}`);
+      mostrarOk('Estudante removido com sucesso!');
+      if (editandoId === estudante.id) cancelarEdicao();
+      carregar(busca);
+    } catch (e) {
+      // Ex.: estudante com conclusões registradas não pode ser removido
+      mostrarErro(e.message);
+    }
+  }
+
   async function aoSalvar(evento) {
     evento.preventDefault();
     try {
@@ -139,6 +152,9 @@ export default function Estudantes() {
                   <div className="acoes">
                     <button className="btn btn-secundario btn-pequeno" onClick={() => iniciarEdicao(e)}>
                       Editar
+                    </button>
+                    <button className="btn btn-perigo btn-pequeno" onClick={() => remover(e)}>
+                      Remover
                     </button>
                   </div>
                 </td>
