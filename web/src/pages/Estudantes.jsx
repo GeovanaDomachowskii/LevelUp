@@ -9,6 +9,7 @@ export default function Estudantes() {
   const [busca, setBusca] = useState('');
   const [form, setForm] = useState(formVazio);
   const [editandoId, setEditandoId] = useState(null);
+  const [perfil, setPerfil] = useState(null);
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
 
   function mostrarErro(texto) {
@@ -67,9 +68,18 @@ export default function Estudantes() {
       await api.delete(`/api/estudante/remover/${estudante.id}`);
       mostrarOk('Estudante removido com sucesso!');
       if (editandoId === estudante.id) cancelarEdicao();
+      setPerfil(null);
       carregar(busca);
     } catch (e) {
       // Ex.: estudante com conclusões registradas não pode ser removido
+      mostrarErro(e.message);
+    }
+  }
+
+  async function verPerfil(estudante) {
+    try {
+      setPerfil(await api.get(`/api/estudante/perfil/${estudante.id}`));
+    } catch (e) {
       mostrarErro(e.message);
     }
   }
@@ -121,6 +131,30 @@ export default function Estudantes() {
         </div>
       </form>
 
+      {perfil && (
+        <div className="card perfil-card">
+          <div className="perfil-topo">
+            <div className="avatar">{perfil.nome.charAt(0).toUpperCase()}</div>
+            <div>
+              <h3 className="perfil-nome">{perfil.nome}</h3>
+              <span className="badge">{perfil.curso || 'Sem curso'}</span>
+            </div>
+            <button className="btn btn-secundario btn-pequeno" onClick={() => setPerfil(null)}>
+              Fechar
+            </button>
+          </div>
+          <div className="perfil-dados">
+            <div><strong>Nível {perfil.nivel}</strong> · {perfil.titulo}</div>
+            <div>{perfil.xpTotal} XP no total</div>
+            <div>Streak: {perfil.streakAtual} dia(s)</div>
+          </div>
+          <div className="barra-progresso">
+            <div className="preenchimento" style={{ width: `${100 - perfil.xpParaProximoNivel}%` }} />
+          </div>
+          <small>Faltam {perfil.xpParaProximoNivel} XP para o próximo nível</small>
+        </div>
+      )}
+
       <form className="barra-busca" onSubmit={aoBuscar}>
         <input
           className="campo-texto"
@@ -150,6 +184,9 @@ export default function Estudantes() {
                 <td>{e.streakAtual}</td>
                 <td>
                   <div className="acoes">
+                    <button className="btn btn-primario btn-pequeno" onClick={() => verPerfil(e)}>
+                      Perfil
+                    </button>
                     <button className="btn btn-secundario btn-pequeno" onClick={() => iniciarEdicao(e)}>
                       Editar
                     </button>
