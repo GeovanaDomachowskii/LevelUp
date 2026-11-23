@@ -1,0 +1,9 @@
+/* Estilos da tela Rankings (CSS gerado com ajuda de IA) */
+.pos {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #e9eaf6; font-weight: 700; font-size: 0.85rem;
+}
+.pos-1 { background: #ffd54a; color: #5c4300; }
+.pos-2 { background: #d9dde6; color: #3b4152; }
+.pos-3 { background: #f0b27a; color: #5a2f06; }

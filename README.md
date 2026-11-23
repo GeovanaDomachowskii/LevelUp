@@ -114,3 +114,14 @@ Resumo geral do sistema (totais de estudantes, missões e conclusões, XP distri
 #### Tema visual
 O CSS global foi gerado com ajuda de IA. Pedido usado: "Crie um CSS global moderno e responsivo para um sistema de gamificação para estudantes chamado Level Up, com tema índigo e destaque amarelo: navbar escura com menu em pílulas, cartões brancos com sombra suave, grade de cartões numéricos, botões primário, secundário e perigo, formulários em grade, tabelas limpas, selos de dificuldade, mensagens de erro e sucesso, barra de progresso de XP e abas. Use variáveis CSS."
  
+#### Estudantes
+Tela de gerenciamento de estudantes, com CRUD completo:
+- Listagem e busca por nome (`GET /api/estudante/listar` e `/buscar/{nome}`)
+- Cadastro com nome, curso e e-mail; o e-mail não pode se repetir (`POST /api/estudante/cadastrar`)
+- Edição (`PUT /api/estudante/alterar/{id}`) e remoção com confirmação (`DELETE /api/estudante/remover/{id}`); a API impede remover estudante que já tem conclusões
+- Perfil com nível, título, XP total, barra de progresso até o próximo nível e streak (`GET /api/estudante/perfil/{id}`)
+
+#### Rankings
+Três abas: **Geral** (top 10 por XP total), **Semanal** (XP ganho nos últimos 7 dias) e **Por curso** (top 10 do curso escolhido). Usa `GET /api/ranking/geral`, `/semanal` e `/curso/{curso}`.
+
+O CSS das telas Estudantes e Rankings foi gerado com ajuda de IA. Pedido usado: "Crie CSS para um cartão de perfil de estudante (avatar com a inicial, dados e barra de XP) e para um ranking com as posições 1, 2 e 3 em ouro, prata e bronze, usando as variáveis do tema global."

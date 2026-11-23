@@ -1,0 +1,14 @@
+/* Estilos da tela Estudantes (CSS gerado com ajuda de IA) */
+.perfil-card { border-left: 6px solid var(--cor-primaria); display: grid; gap: 12px; }
+.perfil-topo { display: flex; align-items: center; gap: 14px; }
+.perfil-topo .btn { margin-left: auto; }
+.perfil-nome { margin: 0 0 4px; font-size: 1.25rem; }
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--cor-primaria), #a29bfe);
+  color: #fff; font-size: 1.5rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.perfil-dados { display: flex; gap: 20px; flex-wrap: wrap; color: var(--cor-texto-suave); }
+.perfil-dados strong { color: var(--cor-texto); }
+.perfil-card small { color: var(--cor-texto-suave); }
