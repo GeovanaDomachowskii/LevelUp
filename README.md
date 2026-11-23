@@ -69,3 +69,48 @@ Cada conquista tem nome, descrição, tipo (`xp`, `streak` ou `missoes`) e um va
 
 ### Revisões realizadas pela equipe
 - Cada trabalho virou um **Pull Request revisado por outro integrante** antes de entrar na `main`.
+
+
+## Parte 2: Front-end React
+ 
+Na parte 2 do projeto foi criada a interface visual do Level Up, que consome a API da parte 1.
+ 
+### Tecnologias
+- React 18 (JavaScript, sem bibliotecas extras), com Vite como ferramenta de desenvolvimento
+- Comunicação com a API usando `fetch`
+- CSS gerado com ajuda de IA
+- A API recebeu a configuração de CORS para aceitar o front-end
+ 
+### Como executar o front-end
+Pré-requisitos: .NET SDK 8 e Node.js 18 ou superior. Use dois terminais.
+ 
+Terminal 1 (API, na pasta principal):
+ 
+```
+dotnet run --project API
+```
+ 
+Terminal 2 (front-end):
+ 
+```
+cd web
+npm install
+npm run dev
+```
+ 
+Depois abra `http://localhost:5173` no navegador. A API fica em `http://localhost:5262`.
+ 
+### Estrutura do front-end
+- `web/src/services/api.js`: cliente que fala com a API
+- `web/src/components/`: Navbar (menu) e Aviso (mensagens de erro e sucesso)
+- `web/src/pages/`: uma tela por arquivo
+- `web/src/styles/global.css`: tema global
+ 
+### Telas
+ 
+#### Início
+Resumo geral do sistema (totais de estudantes, missões e conclusões, XP distribuído e conclusões da semana), a missão do dia e as missões mais concluídas. Usa `GET /api/relatorio/resumo`, `GET /api/missao/do-dia` e `GET /api/missao/mais-concluidas`.
+ 
+#### Tema visual
+O CSS global foi gerado com ajuda de IA. Pedido usado: "Crie um CSS global moderno e responsivo para um sistema de gamificação para estudantes chamado Level Up, com tema índigo e destaque amarelo: navbar escura com menu em pílulas, cartões brancos com sombra suave, grade de cartões numéricos, botões primário, secundário e perigo, formulários em grade, tabelas limpas, selos de dificuldade, mensagens de erro e sucesso, barra de progresso de XP e abas. Use variáveis CSS."
+ 
