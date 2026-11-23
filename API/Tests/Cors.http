@@ -1,0 +1,7 @@
+### Teste de CORS: a resposta precisa ter o cabeçalho Access-Control-Allow-Origin
+GET http://localhost:5262/api/estudante/listar
+Origin: http://localhost:5173
+ 
+### Origem não permitida: NÃO deve ter Access-Control-Allow-Origin
+GET http://localhost:5262/api/estudante/listar
+Origin: http://site-qualquer.com
