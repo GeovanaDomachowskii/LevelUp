@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Aviso from '../components/Aviso';
+import './Rankings.css';
 
 const abas = [
   { id: 'geral', nome: 'Geral' },

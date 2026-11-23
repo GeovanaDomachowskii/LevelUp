@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Aviso from '../components/Aviso';
+import './Estudantes.css';
 
 const formVazio = { nome: '', curso: '', email: '' };
 
