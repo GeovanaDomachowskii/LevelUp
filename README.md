@@ -125,3 +125,12 @@ Tela de gerenciamento de estudantes, com CRUD completo:
 Três abas: **Geral** (top 10 por XP total), **Semanal** (XP ganho nos últimos 7 dias) e **Por curso** (top 10 do curso escolhido). Usa `GET /api/ranking/geral`, `/semanal` e `/curso/{curso}`.
 
 O CSS das telas Estudantes e Rankings foi gerado com ajuda de IA. Pedido usado: "Crie CSS para um cartão de perfil de estudante (avatar com a inicial, dados e barra de XP) e para um ranking com as posições 1, 2 e 3 em ouro, prata e bronze, usando as variáveis do tema global."
+
+#### Missões
+Tela de gerenciamento de missões, com CRUD completo:
+- Listagem com selo da **missão do dia** e dificuldade colorida (`GET /api/missao/listar`)
+- Busca por título (`/buscar/{titulo}`) e filtro por dificuldade (`/listar/dificuldade/{d}`)
+- Cadastro (`POST /api/missao/cadastrar`), edição (`PUT /api/missao/alterar/{id}`) e remoção com confirmação (`DELETE /api/missao/remover/{id}`); a API impede remover missão já concluída
+- Botão **Sortear missão do dia** (`PUT /api/missao/sortear-do-dia`), que escolhe uma missão que vale XP em dobro
+ 
+O CSS da tela Missões foi gerado com ajuda de IA. Pedido usado: "Crie CSS para uma barra de destaque da missão do dia, com fundo amarelo claro e botão, e para uma tabela de missões com descrição em cinza e XP em destaque, usando as variáveis do tema global."
