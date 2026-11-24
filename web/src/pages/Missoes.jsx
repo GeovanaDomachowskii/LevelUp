@@ -2,24 +2,33 @@ import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Aviso from '../components/Aviso';
  
+const formVazio = { titulo: '', descricao: '', xp: '', dificuldade: 'Facil' };
+ 
 export default function Missoes() {
   const [missoes, setMissoes] = useState([]);
   const [busca, setBusca] = useState('');
   const [filtro, setFiltro] = useState('');
+  const [form, setForm] = useState(formVazio);
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
+ 
+  function mostrarErro(texto) {
+    setAviso({ tipo: 'erro', texto });
+  }
+ 
+  function mostrarOk(texto) {
+    setAviso({ tipo: 'ok', texto });
+  }
  
   // A busca por título tem prioridade; senão usa o filtro de dificuldade
   async function carregar(termo = busca, dificuldade = filtro) {
     try {
-      setAviso({ tipo: 'erro', texto: '' });
       let caminho = '/api/missao/listar';
       if (termo.trim()) caminho = `/api/missao/buscar/${encodeURIComponent(termo.trim())}`;
       else if (dificuldade) caminho = `/api/missao/listar/dificuldade/${dificuldade}`;
       setMissoes(await api.get(caminho));
     } catch (e) {
-      // 404 = a busca não encontrou nenhuma missão
       if (e.status === 404) setMissoes([]);
-      else setAviso({ tipo: 'erro', texto: e.message });
+      else mostrarErro(e.message);
     }
   }
  
@@ -43,10 +52,53 @@ export default function Missoes() {
     carregar('', '');
   }
  
+  function aoDigitar(evento) {
+    setForm({ ...form, [evento.target.name]: evento.target.value });
+  }
+ 
+  async function aoSalvar(evento) {
+    evento.preventDefault();
+    try {
+      // O XP precisa ir como número (o formulário guarda texto)
+      await api.post('/api/missao/cadastrar', { ...form, xp: Number(form.xp) });
+      mostrarOk('Missão cadastrada com sucesso!');
+      setForm(formVazio);
+      carregar(busca, filtro);
+    } catch (e) {
+      mostrarErro(e.message);
+    }
+  }
+ 
   return (
     <section className="tela-missoes">
       <h2 className="titulo-pagina">Missões</h2>
       <Aviso tipo={aviso.tipo} texto={aviso.texto} />
+ 
+      <form className="card formulario" onSubmit={aoSalvar}>
+        <label className="campo">
+          Título
+          <input name="titulo" value={form.titulo} onChange={aoDigitar} required />
+        </label>
+        <label className="campo">
+          Descrição
+          <input name="descricao" value={form.descricao} onChange={aoDigitar} />
+        </label>
+        <label className="campo">
+          XP
+          <input name="xp" type="number" min="1" value={form.xp} onChange={aoDigitar} required />
+        </label>
+        <label className="campo">
+          Dificuldade
+          <select name="dificuldade" value={form.dificuldade} onChange={aoDigitar}>
+            <option value="Facil">Facil</option>
+            <option value="Media">Media</option>
+            <option value="Dificil">Dificil</option>
+          </select>
+        </label>
+        <div className="acoes">
+          <button className="btn btn-primario" type="submit">Cadastrar</button>
+        </div>
+      </form>
  
       <form className="barra-busca" onSubmit={aoBuscar}>
         <input
