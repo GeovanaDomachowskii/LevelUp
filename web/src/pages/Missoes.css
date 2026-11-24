@@ -1,0 +1,10 @@
+/* Estilos da tela Missões (CSS gerado com ajuda de IA) */
+.barra-dia {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  background: linear-gradient(135deg, #fff7de, #ffffff);
+  border-left: 6px solid var(--cor-destaque);
+}
+.barra-dia .btn { white-space: nowrap; }
+.tela-missoes .tabela td:nth-child(2) { color: var(--cor-texto-suave); max-width: 320px; }
+.tela-missoes .tabela td:nth-child(3) { font-weight: 700; color: var(--cor-primaria-escura); }
