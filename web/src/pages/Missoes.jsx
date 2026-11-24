@@ -73,6 +73,19 @@ export default function Missoes() {
     setAviso({ tipo: 'erro', texto: '' });
   }
  
+  async function remover(missao) {
+    if (!window.confirm(`Remover a missão "${missao.titulo}"?`)) return;
+    try {
+      await api.delete(`/api/missao/remover/${missao.id}`);
+      mostrarOk('Missão removida com sucesso!');
+      if (editandoId === missao.id) cancelarEdicao();
+      carregar(busca, filtro);
+    } catch (e) {
+      // Ex.: missão que já foi concluída por alguém não pode ser removida
+      mostrarErro(e.message);
+    }
+  }
+ 
   async function aoSalvar(evento) {
     evento.preventDefault();
     try {
@@ -171,6 +184,9 @@ export default function Missoes() {
                     <button className="btn btn-secundario btn-pequeno" onClick={() => iniciarEdicao(m)}>
                       Editar
                     </button>
+                    <button className="btn btn-perigo btn-pequeno" onClick={() => remover(m)}>
+                      Remover
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -182,3 +198,4 @@ export default function Missoes() {
     </section>
   );
 }
+
