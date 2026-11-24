@@ -9,6 +9,7 @@ export default function Missoes() {
   const [busca, setBusca] = useState('');
   const [filtro, setFiltro] = useState('');
   const [form, setForm] = useState(formVazio);
+  const [editandoId, setEditandoId] = useState(null);
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
  
   function mostrarErro(texto) {
@@ -56,13 +57,35 @@ export default function Missoes() {
     setForm({ ...form, [evento.target.name]: evento.target.value });
   }
  
+  function cancelarEdicao() {
+    setEditandoId(null);
+    setForm(formVazio);
+  }
+ 
+  function iniciarEdicao(missao) {
+    setEditandoId(missao.id);
+    setForm({
+      titulo: missao.titulo,
+      descricao: missao.descricao,
+      xp: String(missao.xp),
+      dificuldade: missao.dificuldade,
+    });
+    setAviso({ tipo: 'erro', texto: '' });
+  }
+ 
   async function aoSalvar(evento) {
     evento.preventDefault();
     try {
       // O XP precisa ir como número (o formulário guarda texto)
-      await api.post('/api/missao/cadastrar', { ...form, xp: Number(form.xp) });
-      mostrarOk('Missão cadastrada com sucesso!');
-      setForm(formVazio);
+      const dados = { ...form, xp: Number(form.xp) };
+      if (editandoId) {
+        await api.put(`/api/missao/alterar/${editandoId}`, dados);
+        mostrarOk('Missão alterada com sucesso!');
+      } else {
+        await api.post('/api/missao/cadastrar', dados);
+        mostrarOk('Missão cadastrada com sucesso!');
+      }
+      cancelarEdicao();
       carregar(busca, filtro);
     } catch (e) {
       mostrarErro(e.message);
@@ -96,7 +119,14 @@ export default function Missoes() {
           </select>
         </label>
         <div className="acoes">
-          <button className="btn btn-primario" type="submit">Cadastrar</button>
+          <button className="btn btn-primario" type="submit">
+            {editandoId ? 'Salvar alterações' : 'Cadastrar'}
+          </button>
+          {editandoId && (
+            <button className="btn btn-secundario" type="button" onClick={cancelarEdicao}>
+              Cancelar
+            </button>
+          )}
         </div>
       </form>
  
@@ -121,7 +151,7 @@ export default function Missoes() {
         <table className="tabela">
           <thead>
             <tr>
-              <th>Título</th><th>Descrição</th><th>XP</th><th>Dificuldade</th>
+              <th>Título</th><th>Descrição</th><th>XP</th><th>Dificuldade</th><th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -136,6 +166,13 @@ export default function Missoes() {
                 <td>
                   <span className={`badge badge-${m.dificuldade.toLowerCase()}`}>{m.dificuldade}</span>
                 </td>
+                <td>
+                  <div className="acoes">
+                    <button className="btn btn-secundario btn-pequeno" onClick={() => iniciarEdicao(m)}>
+                      Editar
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -145,4 +182,3 @@ export default function Missoes() {
     </section>
   );
 }
- 
