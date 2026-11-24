@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Aviso from '../components/Aviso';
+import './Missoes.css';
  
 const formVazio = { titulo: '', descricao: '', xp: '', dificuldade: 'Facil' };
  
@@ -220,5 +221,3 @@ export default function Missoes() {
     </section>
   );
 }
- 
-
