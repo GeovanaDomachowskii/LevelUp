@@ -86,6 +86,16 @@ export default function Missoes() {
     }
   }
  
+  async function sortearMissaoDoDia() {
+    try {
+      const sorteada = await api.put('/api/missao/sortear-do-dia');
+      mostrarOk(`Missão do dia: "${sorteada.titulo}". Ela vale XP em dobro!`);
+      carregar(busca, filtro);
+    } catch (e) {
+      mostrarErro(e.message);
+    }
+  }
+ 
   async function aoSalvar(evento) {
     evento.preventDefault();
     try {
@@ -109,6 +119,18 @@ export default function Missoes() {
     <section className="tela-missoes">
       <h2 className="titulo-pagina">Missões</h2>
       <Aviso tipo={aviso.tipo} texto={aviso.texto} />
+ 
+      <div className="card barra-dia">
+        <div>
+          <strong>Missão do dia</strong>
+          <div className="vazio" style={{ textAlign: 'left', padding: 0 }}>
+            Sorteia uma missão que vale XP em dobro. A anterior deixa de ser a do dia.
+          </div>
+        </div>
+        <button className="btn btn-primario" onClick={sortearMissaoDoDia}>
+          Sortear missão do dia
+        </button>
+      </div>
  
       <form className="card formulario" onSubmit={aoSalvar}>
         <label className="campo">
@@ -198,4 +220,5 @@ export default function Missoes() {
     </section>
   );
 }
+ 
 
