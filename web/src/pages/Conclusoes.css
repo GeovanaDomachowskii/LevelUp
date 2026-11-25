@@ -1,0 +1,5 @@
+/* Estilos da tela Concluir missão (CSS gerado com ajuda de IA) */
+.resultado { border-left: 6px solid var(--cor-ok); background: linear-gradient(135deg, #f0fbf5, #ffffff); }
+.resultado .grid-cards { margin-bottom: 0; }
+.resultado .cartao-numero { border-top-color: var(--cor-ok); }
+.tela-conclusoes .tabela td:last-child { font-weight: 700; color: var(--cor-ok); }

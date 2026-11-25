@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Aviso from '../components/Aviso';
+import './Conclusoes.css';
  
 export default function Conclusoes() {
   const [estudantes, setEstudantes] = useState([]);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Aviso from '../components/Aviso';
+import './Conquistas.css';
  
 const rotulos = { xp: 'XP total', streak: 'dias de streak', missoes: 'missões concluídas' };
  
