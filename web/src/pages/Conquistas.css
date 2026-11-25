@@ -1,0 +1,7 @@
+/* Estilos da tela Conquistas (CSS gerado com ajuda de IA) */
+.conquista { margin-bottom: 0; display: flex; flex-direction: column; gap: 6px; border-top: 4px solid var(--cor-destaque); }
+.conquista p { margin: 0; color: var(--cor-texto-suave); }
+.conquista small { color: var(--cor-primaria-escura); font-weight: 600; }
+.conquista-topo { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.conquista.bloqueada { opacity: 0.45; filter: grayscale(0.8); border-top-color: var(--cor-borda); }
+.resumo-progresso { margin: 14px 0 0; }

@@ -134,3 +134,23 @@ Tela de gerenciamento de missões, com CRUD completo:
 - Botão **Sortear missão do dia** (`PUT /api/missao/sortear-do-dia`), que escolhe uma missão que vale XP em dobro
  
 O CSS da tela Missões foi gerado com ajuda de IA. Pedido usado: "Crie CSS para uma barra de destaque da missão do dia, com fundo amarelo claro e botão, e para uma tabela de missões com descrição em cinza e XP em destaque, usando as variáveis do tema global."
+
+#### Conquistas
+Tela de gerenciamento de conquistas, com CRUD completo:
+- Cartões com nome, descrição, tipo (`xp`, `streak` ou `missoes`) e requisito (`GET /api/conquista/listar`)
+- Cadastro (`POST /api/conquista/cadastrar`), edição (`PUT /api/conquista/alterar/{id}`) e remoção (`DELETE /api/conquista/remover/{id}`)
+- Seleção de um estudante para ver quais conquistas ele já liberou e quais ainda estão bloqueadas (`GET /api/conquista/estudante/{id}`)
+ 
+#### Concluir missão
+- Escolha de estudante e missão e registro da conclusão (`POST /api/conclusao/registrar`), mostrando o XP ganho (com bônus de streak e XP em dobro da missão do dia), XP total, nível, título e streak
+- Histórico de conclusões com filtro por estudante (`GET /api/conclusao/listar` e `/estudante/{id}`), com os dados do estudante e da missão
+ 
+### Estilo e uso de IA na parte 2
+- O **CSS** de todas as telas foi gerado com ajuda de IA, com um pedido por área (tema global, estudantes e rankings, missões, conquistas e conclusões). Os pedidos estão descritos em cada tela acima.
+- A IA (Claude) também foi usada para dividir o trabalho em 32 commits, gerar guias passo a passo para cada integrante e ajudar a corrigir erros de Git, Node e React.
+- Todo código foi **testado no navegador** pelo autor antes do commit, e cada pull request foi **revisado por outro integrante**, que apenas aprovava; o merge era feito por quem fez o commit.
+ 
+### Colaboração com Git e GitHub na parte 2
+- 32 commits, 8 por integrante, com mensagens no padrão `feat:`, `style:`, `docs:` e `chore:`
+- 4 pull requests (um por integrante), cada um revisado por outro integrante
+- Cada pessoa trabalhou em uma branch própria (`feature/<nome>-<assunto>`) e nos próprios arquivos, o que evitou conflitos
