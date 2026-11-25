@@ -9,6 +9,7 @@ const formVazio = { nome: '', descricao: '', tipo: 'xp', valorMinimo: '' };
 export default function Conquistas() {
   const [conquistas, setConquistas] = useState([]);
   const [form, setForm] = useState(formVazio);
+  const [editandoId, setEditandoId] = useState(null);
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
  
   function mostrarErro(texto) {
@@ -35,13 +36,47 @@ export default function Conquistas() {
     setForm({ ...form, [evento.target.name]: evento.target.value });
   }
  
+  function cancelarEdicao() {
+    setEditandoId(null);
+    setForm(formVazio);
+  }
+ 
+  function iniciarEdicao(conquista) {
+    setEditandoId(conquista.id);
+    setForm({
+      nome: conquista.nome,
+      descricao: conquista.descricao,
+      tipo: conquista.tipo,
+      valorMinimo: String(conquista.valorMinimo),
+    });
+    setAviso({ tipo: 'erro', texto: '' });
+  }
+ 
+  async function remover(conquista) {
+    if (!window.confirm(`Remover a conquista "${conquista.nome}"?`)) return;
+    try {
+      await api.delete(`/api/conquista/remover/${conquista.id}`);
+      mostrarOk('Conquista removida com sucesso!');
+      if (editandoId === conquista.id) cancelarEdicao();
+      carregar();
+    } catch (e) {
+      mostrarErro(e.message);
+    }
+  }
+ 
   async function aoSalvar(evento) {
     evento.preventDefault();
     try {
       // O valor mínimo precisa ir como número (o formulário guarda texto)
-      await api.post('/api/conquista/cadastrar', { ...form, valorMinimo: Number(form.valorMinimo) });
-      mostrarOk('Conquista cadastrada com sucesso!');
-      setForm(formVazio);
+      const dados = { ...form, valorMinimo: Number(form.valorMinimo) };
+      if (editandoId) {
+        await api.put(`/api/conquista/alterar/${editandoId}`, dados);
+        mostrarOk('Conquista alterada com sucesso!');
+      } else {
+        await api.post('/api/conquista/cadastrar', dados);
+        mostrarOk('Conquista cadastrada com sucesso!');
+      }
+      cancelarEdicao();
       carregar();
     } catch (e) {
       mostrarErro(e.message);
@@ -75,7 +110,14 @@ export default function Conquistas() {
           <input name="valorMinimo" type="number" min="1" value={form.valorMinimo} onChange={aoDigitar} required />
         </label>
         <div className="acoes">
-          <button className="btn btn-primario" type="submit">Cadastrar</button>
+          <button className="btn btn-primario" type="submit">
+            {editandoId ? 'Salvar alterações' : 'Cadastrar'}
+          </button>
+          {editandoId && (
+            <button className="btn btn-secundario" type="button" onClick={cancelarEdicao}>
+              Cancelar
+            </button>
+          )}
         </div>
       </form>
  
@@ -88,6 +130,14 @@ export default function Conquistas() {
             </div>
             <p>{c.descricao}</p>
             <small>Requisito: {c.valorMinimo} {rotulos[c.tipo]}</small>
+            <div className="acoes">
+              <button className="btn btn-secundario btn-pequeno" onClick={() => iniciarEdicao(c)}>
+                Editar
+              </button>
+              <button className="btn btn-perigo btn-pequeno" onClick={() => remover(c)}>
+                Remover
+              </button>
+            </div>
           </div>
         ))}
       </div>
