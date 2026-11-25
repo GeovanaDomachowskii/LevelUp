@@ -10,6 +10,9 @@ export default function Conquistas() {
   const [conquistas, setConquistas] = useState([]);
   const [form, setForm] = useState(formVazio);
   const [editandoId, setEditandoId] = useState(null);
+  const [estudantes, setEstudantes] = useState([]);
+  const [estudanteId, setEstudanteId] = useState('');
+  const [progresso, setProgresso] = useState(null);
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
  
   function mostrarErro(texto) {
@@ -30,7 +33,26 @@ export default function Conquistas() {
  
   useEffect(() => {
     carregar();
+    api
+      .get('/api/estudante/listar')
+      .then(setEstudantes)
+      .catch((e) => mostrarErro(e.message));
   }, []);
+ 
+  // Mostra quais conquistas o estudante escolhido já liberou
+  async function escolherEstudante(evento) {
+    const id = evento.target.value;
+    setEstudanteId(id);
+    setProgresso(null);
+    if (!id) return;
+    try {
+      setProgresso(await api.get(`/api/conquista/estudante/${id}`));
+    } catch (e) {
+      mostrarErro(e.message);
+    }
+  }
+ 
+  const idsLiberadas = progresso ? progresso.liberadas.map((l) => l.id) : [];
  
   function aoDigitar(evento) {
     setForm({ ...form, [evento.target.name]: evento.target.value });
@@ -121,12 +143,37 @@ export default function Conquistas() {
         </div>
       </form>
  
+      <div className="card">
+        <label className="campo" style={{ maxWidth: 360 }}>
+          Ver conquistas liberadas de um estudante
+          <select value={estudanteId} onChange={escolherEstudante}>
+            <option value="">Selecione...</option>
+            {estudantes.map((e) => (
+              <option key={e.id} value={e.id}>{e.nome}</option>
+            ))}
+          </select>
+        </label>
+        {progresso && (
+          <p className="resumo-progresso">
+            <strong>{progresso.estudante}</strong>: {progresso.xpTotal} XP, streak de {progresso.streakAtual} dia(s),{' '}
+            {progresso.missoesConcluidas} missão(ões) concluída(s) ·{' '}
+            <strong>{progresso.liberadas.length}</strong> de {conquistas.length} conquistas liberadas
+          </p>
+        )}
+      </div>
+ 
       <div className="grid-cards">
         {conquistas.map((c) => (
-          <div key={c.id} className="card conquista">
+          <div
+            key={c.id}
+            className={
+              progresso && !idsLiberadas.includes(c.id) ? 'card conquista bloqueada' : 'card conquista'
+            }
+          >
             <div className="conquista-topo">
               <strong>{c.nome}</strong>
               <span className="badge">{c.tipo}</span>
+              {progresso && idsLiberadas.includes(c.id) && <span className="selo-dia">Liberada</span>}
             </div>
             <p>{c.descricao}</p>
             <small>Requisito: {c.valorMinimo} {rotulos[c.tipo]}</small>
@@ -145,3 +192,4 @@ export default function Conquistas() {
     </section>
   );
 }
+ 
