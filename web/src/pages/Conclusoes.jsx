@@ -8,19 +8,37 @@ export default function Conclusoes() {
   const [estudanteId, setEstudanteId] = useState('');
   const [missaoId, setMissaoId] = useState('');
   const [resultado, setResultado] = useState(null);
+  const [historico, setHistorico] = useState([]);
+  const [filtroId, setFiltroId] = useState('');
   const [aviso, setAviso] = useState({ tipo: 'erro', texto: '' });
+ 
+  // Histórico: de todos os estudantes ou só do estudante escolhido no filtro
+  async function carregarHistorico(id = filtroId) {
+    try {
+      const caminho = id ? `/api/conclusao/estudante/${id}` : '/api/conclusao/listar';
+      setHistorico(await api.get(caminho));
+    } catch (e) {
+      setAviso({ tipo: 'erro', texto: e.message });
+    }
+  }
  
   useEffect(() => {
     async function carregar() {
       try {
         setEstudantes(await api.get('/api/estudante/listar'));
         setMissoes(await api.get('/api/missao/listar'));
+        await carregarHistorico('');
       } catch (e) {
         setAviso({ tipo: 'erro', texto: e.message });
       }
     }
     carregar();
   }, []);
+ 
+  function aoMudarFiltro(evento) {
+    setFiltroId(evento.target.value);
+    carregarHistorico(evento.target.value);
+  }
  
   async function concluir(evento) {
     evento.preventDefault();
@@ -29,6 +47,7 @@ export default function Conclusoes() {
       const resposta = await api.post('/api/conclusao/registrar', { estudanteId, missaoId });
       setResultado(resposta);
       setAviso({ tipo: 'ok', texto: 'Missão concluída com sucesso!' });
+      carregarHistorico();
     } catch (e) {
       // Ex.: "Missão já concluída hoje!"
       setAviso({ tipo: 'erro', texto: e.message });
@@ -93,6 +112,37 @@ export default function Conclusoes() {
           </div>
         </div>
       )}
+ 
+      <h3 className="subtitulo">Histórico de conclusões</h3>
+      <div className="card tabela-rolagem">
+        <label className="campo" style={{ maxWidth: 320, marginBottom: 14 }}>
+          Filtrar por estudante
+          <select value={filtroId} onChange={aoMudarFiltro}>
+            <option value="">Todos</option>
+            {estudantes.map((e) => (
+              <option key={e.id} value={e.id}>{e.nome}</option>
+            ))}
+          </select>
+        </label>
+        <table className="tabela">
+          <thead>
+            <tr>
+              <th>Data</th><th>Estudante</th><th>Missão</th><th>XP ganho</th>
+            </tr>
+          </thead>
+          <tbody>
+            {historico.map((h) => (
+              <tr key={h.id}>
+                <td>{new Date(h.dataConclusao).toLocaleString('pt-BR')}</td>
+                <td>{h.estudante?.nome}</td>
+                <td>{h.missao?.titulo}</td>
+                <td>+{h.xpGanho}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {historico.length === 0 && <p className="vazio">Nenhuma conclusão registrada.</p>}
+      </div>
     </section>
   );
 }
